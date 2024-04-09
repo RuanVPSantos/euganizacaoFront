@@ -1,0 +1,14 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a, a * {
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-content: center;
+  align-items: center;
+}
