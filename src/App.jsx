@@ -11,7 +11,7 @@ const App = () => {
         <Sidebar />
         <Routes>
           <Route path="/" element={<p>Main Content goes Here</p>} />
-          <Route path="/butler" element={<p>Frater content goes here</p>} />
+          <Route path="/frater" element={<p>Frater content goes here</p>} />
           <Route path="/butler" element={<p>Butler content goes here</p>} />
           <Route path="/faculdade" element={<p>Faculdade content goes here</p>} />
           <Route path="/familia" element={<p>Família content goes here</p>} />
