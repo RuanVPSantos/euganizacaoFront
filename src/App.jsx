@@ -1,7 +1,5 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Sidebar from './components/sidebar'; // Importe o componente Sidebar que criamos anteriormente
-import ContentComponent from './components/ContentComponent'; // Importe o componente ContentComponent (substitua pelo seu componente real)
+import Sidebar from './components/sidebar';
 import "./App.css"
 import Home from './pages/home';
 import Projetos from './pages/projetos';
