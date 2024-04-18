@@ -75,6 +75,16 @@ const Sidebar = () => {
           }}
         >
           <List>
+          <ListItem
+              button
+              component={Link}
+              to={"/"}
+              selected={false}
+            >
+              <ListItemText>
+                <Typography variant="h6">Home</Typography>
+              </ListItemText>
+            </ListItem>
             <ListItem
               button
               key="Frater"
@@ -106,6 +116,7 @@ const Sidebar = () => {
                 ))}
               </List>
             </Collapse>
+            
             {OtherLinks.map((item) => (
               <ListItem
                 button
