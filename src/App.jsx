@@ -3,6 +3,7 @@ import Sidebar from './components/sidebar';
 import "./App.css"
 import Home from './pages/home';
 import Projetos from './pages/projetos';
+import ToDoList from './pages/reference';
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/frater" element={<p>Frater content goes here</p>} />
           <Route path="/butler" element={<p>Butler content goes here</p>} />
+          <Route path='/reference' element={<ToDoList />} />
           <Route path="/faculdade" element={<p>Faculdade content goes here</p>} />
           <Route path="/familia" element={<p>Família content goes here</p>} />
           <Route path="/amigos" element={<p>Amigos content goes here</p>} />

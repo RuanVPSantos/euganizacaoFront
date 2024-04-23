@@ -26,11 +26,12 @@ const FraterLinks = [
   { text: 'Darson', href: 'https://plataforma.vobi.com.br/profissional/projetos/perfil/132283/financeiro/cobrancas' },
   { text: 'Maia', href: '' },
   { text: 'Thibaus', href: 'https://plataforma.vobi.com.br/profissional/projetos/perfil/132290/financeiro/cobrancas' },
-  { text: 'Pingret', href: 'https://plataforma.vobi.com.br/profissional/projetos/perfil/162162/financeiro/cobrancas' },
+  { text: 'Pingret', href: 'https://plataforma.vobi.com.br/profissional/projetos/perfil/162162/financeiro/cobrancas' }
 ];
 
 const OtherLinks = [
   { text: 'Butler', path: '/butler' },
+  { text: 'Reference', path: '/reference'},
   { text: 'Faculdade', path: '/faculdade' },
   { text: 'Família', path: '/familia' },
   { text: 'Amigos', path: '/amigos' },
