@@ -1,12 +1,22 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './components/sidebar';
 import "./App.css"
-import Home from './pages/home';
+import Home from './pages/home/home';
 import Projetos from './pages/projetos';
 import ToDoList from './pages/reference';
+import { createTheme } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+
 
 const App = () => {
+  const theme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
   return (
+    <ThemeProvider theme={theme}>
+
     <Router>
       <div style={{ display: 'flex' }}>
         <Sidebar />
@@ -25,6 +35,7 @@ const App = () => {
         </Routes>
       </div>
     </Router>
+    </ThemeProvider>
   );
 };
 
