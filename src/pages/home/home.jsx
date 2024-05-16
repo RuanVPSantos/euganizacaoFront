@@ -36,7 +36,7 @@ function Home() {
         }
         return formatted;
     };
-
+ 
     const markVideoAsWatched = async (videoId) => {
         try {
             await fetch(`${import.meta.env.VITE_YT_API}yt/videos/${videoId}/mark-as-watched`, {
