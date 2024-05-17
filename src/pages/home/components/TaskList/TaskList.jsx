@@ -17,18 +17,8 @@ const TaskList = ({ tasks, newTaskContent, setNewTaskContent, onCreateTask, onUp
   });
 
   const handleCreateTask = async () => {
-    const newTask = {
-      id: 42389048,
-      content: newTaskContent,
-      status: 1
-    };
-
-    const updatedTasks = [...sortedTasks, newTask];
-    onUpdateTask(updatedTasks);
-
     try {
       await onCreateTask(newTaskContent);
-      
       setNewTaskContent('');
     } catch (error) {
       console.error('Erro ao criar a nova tarefa:', error);
@@ -38,9 +28,6 @@ const TaskList = ({ tasks, newTaskContent, setNewTaskContent, onCreateTask, onUp
   };
 
   const handleDeleteTask = async (taskId) => {
-    const updatedTasks = sortedTasks.filter(task => task.id !== taskId);
-    onUpdateTask(updatedTasks);
-
     try {
       await onDeleteTask(taskId);
     } catch (error) {

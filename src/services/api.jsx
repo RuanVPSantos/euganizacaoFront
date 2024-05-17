@@ -51,23 +51,19 @@ export const updateMainNote = async (content) => {
   }
 };
 
-
-export const createTask = async (content, status = 1) => {
+export const createTask = async (content) => {
   try {
-    const response = await axiosInstance.post(TASK_API_BASE, {
-      content,
-      status
-    });
+    const response = await axiosInstance.post(TASK_API_BASE, { content, status: 1 });
     return response.data;
   } catch (error) {
-    throw new Error('Erro ao criar tarefa: ' + error.response?.statusText || error.message);
+    throw new Error('Erro ao criar tarefa: ' + (error.response?.statusText || error.message));
   }
 };
+
 
 export const getUserTasks = async () => {
   try {
     const response = await axiosInstance.get(`${TASK_API_BASE}`);
-    console.log(response.data)
     return response.data;
   } catch (error) {
     throw new Error('Erro ao buscar tarefas do usuário: ' + error.response?.statusText || error.message);

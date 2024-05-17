@@ -1,4 +1,3 @@
-// src/views/Home.jsx
 import { useState, useEffect } from 'react';
 import { Grid, Skeleton } from '@mui/material';
 import LoadingSkeleton from './components/LoadingSkeleton/LoadingSkeleton';
@@ -92,34 +91,51 @@ const Home = () => {
 
   const handleCreateTask = async () => {
     if (!newTaskContent) return;
-
+  
+    const newTask = {
+      id: Date.now(),
+      content: newTaskContent,
+      status: 1
+    };
+  
+    const previousTasks = [...tasks];
+  
+    setTasks(prevTasks => [...prevTasks, newTask]);
+    setNewTaskContent('');
+  
     try {
-      const newTask = await createTask(newTaskContent);
-      setTasks([...tasks, newTask]);
-      setNewTaskContent('');
+      const createdTask = await createTask(newTaskContent);
+      setTasks(prevTasks => prevTasks.map(task => task.id === newTask.id ? createdTask : task));
     } catch (error) {
       console.error(error.message);
+      setTasks(previousTasks);
     }
   };
+  
+  
 
   const handleUpdateTask = async (taskId, updates) => {
-    // Atualizar o estado antes de fazer a chamada à API
-    setTasks(tasks.map(task => task.id === taskId ? { ...task, ...updates } : task));
+    const previousTasks = [...tasks];
+    setTasks(prevTasks => prevTasks.map(task => task.id === taskId ? { ...task, ...updates } : task));
 
     try {
       const updatedTask = await updateTask(taskId, updates);
-      setTasks(tasks.map(task => task.id === taskId ? updatedTask : task));
+      setTasks(prevTasks => prevTasks.map(task => task.id === taskId ? updatedTask : task));
     } catch (error) {
       console.error(error.message);
+      setTasks(previousTasks);
     }
   };
 
   const handleDeleteTask = async (taskId) => {
+    const previousTasks = [...tasks];
+    setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
+
     try {
       await deleteTask(taskId);
-      setTasks(tasks.filter(task => task.id !== taskId));
     } catch (error) {
       console.error(error.message);
+      setTasks(previousTasks);
     }
   };
 
