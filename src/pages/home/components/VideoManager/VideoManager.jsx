@@ -5,7 +5,7 @@ import VideoManagerPropTypes from './VideoManager.propTypes';
 
 const VideoManager = ({ videos, loading, handleMarkAsWatched, handleMarkAsUnwatched }) => {
   return (
-    <Grid item xs={12} md={8}>
+    <Grid item xs={12}>
       {loading ? <LoadingSkeleton /> : videos.map((channel, index) => (
         <VideoGrid
           key={index}

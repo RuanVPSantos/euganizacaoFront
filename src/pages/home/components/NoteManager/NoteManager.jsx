@@ -4,7 +4,7 @@ import NoteManagerPropTypes from './NoteManager.propTypes';
 
 const NoteManager = ({ mainNoteContent, handleMainNoteSave }) => {
   return (
-    <Grid item xs={12} md={4}>
+    <Grid item xs={12} md={12}>
       {mainNoteContent ? (
         <MarkdownEditor initialContent={mainNoteContent} onSave={handleMainNoteSave} />
       ) : (

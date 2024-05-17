@@ -79,26 +79,30 @@ const Home = () => {
   };
 
   return (
-    <Grid container spacing={4} p={4}>
-      <VideoManager
-        videos={videos}
-        loading={loading}
-        handleMarkAsWatched={handleMarkAsWatched}
-        handleMarkAsUnwatched={handleMarkAsUnwatched}
-      />
-      <NoteManager
-        mainNoteContent={mainNoteContent}
-        handleMainNoteSave={handleMainNoteSave}
-      />
-      <TaskManager
-        tasks={tasks}
-        newTaskContent={newTaskContent}
-        setNewTaskContent={setNewTaskContent}
-        handleCreateTask={handleCreateTask}
-        handleUpdateTask={handleUpdateTask}
-        handleDeleteTask={handleDeleteTask}
-      />
-    </Grid>
+      <Grid container spacing={1} p={2}>
+          <Grid item xs={8}>
+              <VideoManager
+                videos={videos}
+                loading={loading}
+                handleMarkAsWatched={handleMarkAsWatched}
+                handleMarkAsUnwatched={handleMarkAsUnwatched}
+                />
+          </Grid>
+          <Grid item xs={4}>
+              <NoteManager
+                mainNoteContent={mainNoteContent}
+                handleMainNoteSave={handleMainNoteSave}
+                />
+              <TaskManager
+                tasks={tasks}
+                newTaskContent={newTaskContent}
+                setNewTaskContent={setNewTaskContent}
+                handleCreateTask={handleCreateTask}
+                handleUpdateTask={handleUpdateTask}
+                handleDeleteTask={handleDeleteTask}
+                />
+          </Grid>
+      </Grid>
   );
 };
 
