@@ -1,17 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Grid, Skeleton } from '@mui/material';
-import LoadingSkeleton from './components/LoadingSkeleton/LoadingSkeleton';
-import MarkdownEditor from './components/MarkdownEditor/MarkdownEditor';
-import VideoGrid from './components/VideoGrid/VideoGrid';
-import TaskList from './components/TaskList/TaskList';
-import { fetchVideos, fetchMainNote, markVideoAsWatched, markVideoAsUnwatched, updateMainNote, getUserTasks, createTask, updateTask, deleteTask } from '../../services/api';
+import { Grid } from '@mui/material';
+import { fetchVideos, fetchMainNote, markVideoAsWatched, markVideoAsUnwatched, updateMainNote } from '../../services/api';
+import useTasks from './hooks/useTasks';
+import VideoManager from './components/VideoManager/VideoManager';
+import NoteManager from './components/NoteManager/NoteManager';
+import TaskManager from './components/TaskManager/TaskManager';
 
 const Home = () => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [mainNoteContent, setMainNoteContent] = useState('');
-  const [tasks, setTasks] = useState([]);
-  const [newTaskContent, setNewTaskContent] = useState('');
+  const { tasks, newTaskContent, setNewTaskContent, handleCreateTask, handleUpdateTask, handleDeleteTask } = useTasks();
 
   useEffect(() => {
     const loadVideos = async () => {
@@ -35,18 +34,8 @@ const Home = () => {
       }
     };
 
-    const fetchTasks = async () => {
-      try {
-        const userTasks = await getUserTasks();
-        setTasks(userTasks);
-      } catch (error) {
-        console.error(error.message);
-      }
-    };
-
     loadMainNote();
     loadVideos();
-    fetchTasks();
   }, []);
 
   const formatVideos = (data) => {
@@ -89,84 +78,26 @@ const Home = () => {
     }
   };
 
-  const handleCreateTask = async () => {
-    if (!newTaskContent) return;
-  
-    const newTask = {
-      id: Date.now(),
-      content: newTaskContent,
-      status: 1
-    };
-  
-    const previousTasks = [...tasks];
-  
-    setTasks(prevTasks => [...prevTasks, newTask]);
-    setNewTaskContent('');
-  
-    try {
-      const createdTask = await createTask(newTaskContent);
-      setTasks(prevTasks => prevTasks.map(task => task.id === newTask.id ? createdTask : task));
-    } catch (error) {
-      console.error(error.message);
-      setTasks(previousTasks);
-    }
-  };
-  
-  
-
-  const handleUpdateTask = async (taskId, updates) => {
-    const previousTasks = [...tasks];
-    setTasks(prevTasks => prevTasks.map(task => task.id === taskId ? { ...task, ...updates } : task));
-
-    try {
-      const updatedTask = await updateTask(taskId, updates);
-      setTasks(prevTasks => prevTasks.map(task => task.id === taskId ? updatedTask : task));
-    } catch (error) {
-      console.error(error.message);
-      setTasks(previousTasks);
-    }
-  };
-
-  const handleDeleteTask = async (taskId) => {
-    const previousTasks = [...tasks];
-    setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
-
-    try {
-      await deleteTask(taskId);
-    } catch (error) {
-      console.error(error.message);
-      setTasks(previousTasks);
-    }
-  };
-
   return (
     <Grid container spacing={4} p={4}>
-      <Grid item xs={12} md={8}>
-        {loading ? <LoadingSkeleton /> : videos.map((channel, index) => (
-          <VideoGrid
-            key={index}
-            channelName={channel.channelName}
-            videos={channel.videos}
-            onMarkAsWatched={handleMarkAsWatched}
-            onMarkAsUnwatched={handleMarkAsUnwatched}
-          />
-        ))}
-      </Grid>
-      <Grid item xs={12} md={4}>
-        {mainNoteContent ? (
-          <MarkdownEditor initialContent={mainNoteContent} onSave={handleMainNoteSave} />
-        ) : (
-          <Skeleton variant="rectangular" sx={{ height: 120, width: 300 }}/>
-        )}
-        <TaskList
-          tasks={tasks}
-          newTaskContent={newTaskContent}
-          setNewTaskContent={setNewTaskContent}
-          onCreateTask={handleCreateTask}
-          onUpdateTask={handleUpdateTask}
-          onDeleteTask={handleDeleteTask}
-        />
-      </Grid>
+      <VideoManager
+        videos={videos}
+        loading={loading}
+        handleMarkAsWatched={handleMarkAsWatched}
+        handleMarkAsUnwatched={handleMarkAsUnwatched}
+      />
+      <NoteManager
+        mainNoteContent={mainNoteContent}
+        handleMainNoteSave={handleMainNoteSave}
+      />
+      <TaskManager
+        tasks={tasks}
+        newTaskContent={newTaskContent}
+        setNewTaskContent={setNewTaskContent}
+        handleCreateTask={handleCreateTask}
+        handleUpdateTask={handleUpdateTask}
+        handleDeleteTask={handleDeleteTask}
+      />
     </Grid>
   );
 };
