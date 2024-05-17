@@ -1,25 +1,29 @@
-// components/MarkdownEditor.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 import ReactMarkdown from 'react-markdown';
 import { Grid, Switch, Paper } from '@mui/material';
-// import 'react-markdown-editor-lite/lib/index.css';
 import './markdownEditorDark.css';
 
-// Initialize a markdown parser
 const mdParser = new MarkdownIt();
 
-const MarkdownEditor = ({ initialContent }) => {
+const MarkdownEditor = ({ initialContent, onSave }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [content, setContent] = useState(initialContent);
+
+  useEffect(() => {
+    setContent(initialContent);
+  }, [initialContent]);
 
   const handleEditorChange = ({ text }) => {
     setContent(text);
   };
 
-  const toggleMode = () => {
+  const toggleMode = async () => {
+    if (isEditMode) {
+      await onSave(content);
+    }
     setIsEditMode(!isEditMode);
   };
 
@@ -52,11 +56,12 @@ const MarkdownEditor = ({ initialContent }) => {
 };
 
 MarkdownEditor.propTypes = {
-  initialContent: PropTypes.string
+  initialContent: PropTypes.string,
+  onSave: PropTypes.func.isRequired,
 };
 
 MarkdownEditor.defaultProps = {
-  initialContent: ''
+  initialContent: '',
 };
 
 export default MarkdownEditor;

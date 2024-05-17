@@ -1,4 +1,3 @@
-// components/LoadingSkeleton.jsx
 import { Grid, Skeleton } from '@mui/material';
 
 const LoadingSkeleton = () => (

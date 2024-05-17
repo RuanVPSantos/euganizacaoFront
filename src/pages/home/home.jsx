@@ -1,46 +1,40 @@
+// src/views/Home.jsx
 import { useState, useEffect } from 'react';
 import { Grid, Skeleton } from '@mui/material';
-import VideoGrid from './components/VideoGrid';
-import LoadingSkeleton from './components/LoadingSkeleton';
-import MarkdownEditor from './components/MarkdownEditor';
+import LoadingSkeleton from './components/LoadingSkeleton/LoadingSkeleton';
+import MarkdownEditor from './components/MarkdownEditor/MarkdownEditor';
+import { fetchVideos, fetchMainNote, markVideoAsWatched, markVideoAsUnwatched, updateMainNote } from '../../services/api';
+import VideoGrid from './components/VideoGrid/VideoGrid';
 
 const Home = () => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [mainNoteContent, setMainNoteContent] = useState();
+  const [mainNoteContent, setMainNoteContent] = useState('');
 
   useEffect(() => {
-    async function fetchVideos() {
+    const loadVideos = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_YT_API}yt/`);
-        if (response.ok) {
-          const data = await response.json();
-          const formattedVideos = formatVideos(data);
-          setVideos(formattedVideos);
-        } else {
-          console.error('Erro ao buscar vídeos:', response.statusText);
-        }
+        const data = await fetchVideos();
+        const formattedVideos = formatVideos(data);
+        setVideos(formattedVideos);
       } catch (error) {
-        console.error('Erro ao buscar vídeos:', error);
+        console.error(error.message);
       } finally {
         setLoading(false);
       }
-    }
-    async function fetchMainNote() {
+    };
+
+    const loadMainNote = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_MAINNOTE_API}main_note/`);
-        if (response.ok) {
-          const data = await response.json();
-          setMainNoteContent(data.var_content_mnt);
-        } else {
-          console.error('Erro ao buscar main note:', response.statusText);
-        }
+        const data = await fetchMainNote();
+        setMainNoteContent(data.var_content_mnt);
       } catch (error) {
-        console.error('Erro ao buscar main note:', error);
-      } 
-    }
-    fetchMainNote();
-    fetchVideos();
+        console.error(error.message);
+      }
+    };
+
+    loadMainNote();
+    loadVideos();
   }, []);
 
   const formatVideos = (data) => {
@@ -50,24 +44,24 @@ const Home = () => {
     }));
   };
 
-  const markVideoAsWatched = async (videoId) => {
+  const handleMarkAsWatched = async (videoId) => {
     try {
-      await fetch(`${import.meta.env.VITE_YT_API}yt/videos/${videoId}/mark-as-watched`, { method: 'POST' });
+      await markVideoAsWatched(videoId);
       updateVideoStatus(videoId, true);
     } catch (error) {
-      console.error('Erro ao marcar vídeo como assistido:', error);
+      console.error(error.message);
     }
   };
-  
-  const markVideoAsUnwatched = async (videoId) => {
+
+  const handleMarkAsUnwatched = async (videoId) => {
     try {
-      await fetch(`${import.meta.env.VITE_YT_API}yt/videos/${videoId}/mark-as-unwatched`, { method: 'POST' });
+      await markVideoAsUnwatched(videoId);
       updateVideoStatus(videoId, false);
     } catch (error) {
-      console.error('Erro ao marcar vídeo como não assistido:', error);
+      console.error(error.message);
     }
   };
-  
+
   const updateVideoStatus = (videoId, seen) => {
     setVideos(videos.map(channel => ({
       ...channel,
@@ -75,29 +69,12 @@ const Home = () => {
     })));
   };
 
-  const updateMainNote = async (content) => {
+  const handleMainNoteSave = async (text) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_MAINNOTE_API}/main_note/`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ content })
-      });
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Main note updated:', data);
-      } else {
-        console.error('Erro ao atualizar a nota principal:', response.statusText);
-      }
+      await updateMainNote(text);
     } catch (error) {
-      console.error('Erro ao atualizar a nota principal:', error);
+      console.error(error.message);
     }
-  };
-
-  const handleMainNoteChange = (text) => {
-    setMainNoteContent(text);
-    updateMainNote(text);
   };
 
   return (
@@ -108,24 +85,21 @@ const Home = () => {
             key={index}
             channelName={channel.channelName}
             videos={channel.videos}
-            onMarkAsWatched={markVideoAsWatched}
-            onMarkAsUnwatched={markVideoAsUnwatched}
+            onMarkAsWatched={handleMarkAsWatched}
+            onMarkAsUnwatched={handleMarkAsUnwatched}
           />
         ))}
       </Grid>
       <Grid item xs={12} md={4}>
         {
-          mainNoteContent != undefined ? 
-          <MarkdownEditor initialContent={mainNoteContent} onChange={handleMainNoteChange} /> 
+          mainNoteContent ? 
+          <MarkdownEditor initialContent={mainNoteContent} onSave={handleMainNoteSave} /> 
           : 
           <Skeleton variant="rectangular" sx={{ height: 120, width: 300 }}/>
         }
-        
       </Grid>
     </Grid>
   );
 };
 
 export default Home;
-
-
