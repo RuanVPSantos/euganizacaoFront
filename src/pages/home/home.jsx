@@ -80,7 +80,7 @@ const Home = () => {
 
     return (
         <Grid container spacing={1} p={2}>
-            <Grid item xs={8}>
+            <Grid item xs={12} sm={8}>
                 <VideoManager
                     videos={videos}
                     loading={loading}
@@ -88,7 +88,7 @@ const Home = () => {
                     handleMarkAsUnwatched={handleMarkAsUnwatched}
                 />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item sm={4} xs={12}>
                 <NoteManager
                     mainNoteContent={mainNoteContent}
                     handleMainNoteSave={handleMainNoteSave}
