@@ -25,7 +25,7 @@ const TaskListItem = ({ task, onUpdateTask, onDeleteTask }) => {
   const handleStatusChange = (event) => {
     onUpdateTask(task.id, { status: event.target.value });
   };
-
+  console.log(task)
   return (
     <ListItem key={task.id} dense>
       <Grid container alignItems="center">
