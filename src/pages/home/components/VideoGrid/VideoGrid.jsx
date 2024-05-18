@@ -9,7 +9,7 @@ const VideoGrid = ({ channelName, videos, onMarkAsWatched, onMarkAsUnwatched }) 
     </Typography>
     <Grid container spacing={2}>
       {videos.map((video, index) => (
-        <Grid item xs={12} sm={6} md={4} lg={4} key={index}>
+        <Grid item xs={12} sm={4} key={index}>
           <MediaCard
             video={video}
             onMarkAsWatched={onMarkAsWatched}

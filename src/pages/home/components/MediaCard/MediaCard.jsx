@@ -12,7 +12,7 @@ function MediaCard({ video, onMarkAsWatched, onMarkAsUnwatched }) {
   const [seen, setSeen] = useState(video.seen);
 
   const cardStyle = {
-    maxWidth: 200,
+    with: "100%",
     opacity: seen ? 0.3 : 1,
   };
 
