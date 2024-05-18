@@ -25,7 +25,7 @@ function BasicCard({ title, content }) {
 
 BasicCard.propTypes = {
   title: PropTypes.string.isRequired,
-  content: PropTypes.node.isRequired, // Alterado para PropTypes.node para aceitar elementos JSX
+  content: PropTypes.node.isRequired,
 };
 
 export default BasicCard;

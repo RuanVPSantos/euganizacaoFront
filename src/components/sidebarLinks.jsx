@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
     List,
@@ -15,14 +14,14 @@ import FraterLinks from './FraterLinks';
 import OtherLinks from './OtherLinks';
 import ButlerLinks from './ButlerLinks';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import ListItemButton from '@mui/material/ListItemButton';
+import PropTypes from 'prop-types';
 import EngineeringOutlinedIcon from '@mui/icons-material/EngineeringOutlined';
 import CodeOffOutlinedIcon from '@mui/icons-material/CodeOffOutlined';
 
 function SidebarLinks({ fraterOpen, butlerOpen, toggleFrater, toggleButler }) {
     return (
         <List>
-            <ListItem button>
+            <ListItem component={Link} to={"/"}>
                 <ListItemIcon
                     sx={{
                         minWidth: 0,
@@ -33,7 +32,7 @@ function SidebarLinks({ fraterOpen, butlerOpen, toggleFrater, toggleButler }) {
                     <HomeOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText>
-                    <Typography component={Link} to={"/"}>
+                    <Typography>
                         Home
                     </Typography>
                 </ListItemText>
@@ -127,7 +126,11 @@ function SidebarLinks({ fraterOpen, butlerOpen, toggleFrater, toggleButler }) {
                 </List>
             </Collapse>
             {OtherLinks.map((item) => (
-                <ListItem key={item.text}>
+                <ListItem 
+                    key={item.text}
+                    component={Link}
+                    to={item.path}
+                >
                     <ListItemIcon
                         sx={{
                             minWidth: 0,
@@ -138,7 +141,7 @@ function SidebarLinks({ fraterOpen, butlerOpen, toggleFrater, toggleButler }) {
                         {item.icon}
                     </ListItemIcon>
                     <ListItemText>
-                        <Typography component={Link} to={item.path}>
+                        <Typography>
                             {item.text}
                         </Typography>
                     </ListItemText>
@@ -149,3 +152,10 @@ function SidebarLinks({ fraterOpen, butlerOpen, toggleFrater, toggleButler }) {
 }
 
 export default SidebarLinks;
+
+SidebarLinks.propTypes = {
+    fraterOpen: PropTypes.bool.isRequired,
+    butlerOpen: PropTypes.bool.isRequired,
+    toggleFrater: PropTypes.func.isRequired,
+    toggleButler: PropTypes.func.isRequired,
+};
