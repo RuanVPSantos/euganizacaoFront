@@ -19,8 +19,8 @@ const App = () => {
     <ThemeProvider theme={theme}>
 
     <Router>
-      <div style={{ display: 'flex' }}>
-        <Sidebar />
+    <div style={{ display: 'flex' }}>
+      <Sidebar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/frater" element={<Frater />} />

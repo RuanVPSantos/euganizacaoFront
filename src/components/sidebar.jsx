@@ -1,154 +1,101 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import {
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-  IconButton,
-  Collapse,
-  createTheme,
-  ThemeProvider,
-} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import SidebarLinks from './sidebarLinks';
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import MuiDrawer from '@mui/material/Drawer';
+import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
-const FraterLinks = [
-  { text: 'Caju Limão', href: 'https://plataforma.vobi.com.br/profissional/projetos/perfil/174872/financeiro/cobrancas' },
-  { text: 'QI 05 Casa 10', href: 'https://plataforma.vobi.com.br/profissional/projetos/perfil/188714/financeiro/cobrancas' },
-  { text: 'Bar Superquadra', href: 'https://plataforma.vobi.com.br/profissional/projetos/perfil/198694/financeiro/cobrancas' },
-  { text: 'QI 11 - Rafael', href: 'https://plataforma.vobi.com.br/profissional/projetos/perfil/170234/financeiro/cobrancas' },
-  { text: 'Hênio', href: 'https://plataforma.vobi.com.br/profissional/projetos/perfil/132277/financeiro/cobrancas' },
-  { text: 'Tiffany', href: 'https://plataforma.vobi.com.br/profissional/projetos/perfil/185454/financeiro/cobrancas' },
-  { text: '402 Norte', href: 'https://plataforma.vobi.com.br/profissional/projetos/perfil/147823/financeiro/cobrancas' },
-  { text: 'Darson', href: 'https://plataforma.vobi.com.br/profissional/projetos/perfil/132283/financeiro/cobrancas' },
-  { text: 'Maia', href: '' },
-  { text: 'Thibaus', href: 'https://plataforma.vobi.com.br/profissional/projetos/perfil/132290/financeiro/cobrancas' },
-  { text: 'Pingret', href: 'https://plataforma.vobi.com.br/profissional/projetos/perfil/162162/financeiro/cobrancas' }
-];
+const drawerWidth = 240;
 
-const OtherLinks = [
-  { text: 'Butler', path: '/butler' },
-  { text: 'Reference', path: '/reference'},
-  { text: 'Faculdade', path: '/faculdade' },
-  { text: 'Família', path: '/familia' },
-  { text: 'Amigos', path: '/amigos' },
-  { text: 'Projetos de expansão', path: '/projetos' },
-  { text: 'Jogos', path: '/jogos' },
-  { text: 'Contas', path: '/contas' },
-  { text: 'Sonhos', path: '/sonhos' },
-];
+const openedMixin = (theme) => ({
+  width: drawerWidth,
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: 'hidden',
+});
 
-const Sidebar = () => {
-  const [open, setOpen] = useState(false);
-  const [fraterOpen, setFraterOpen] = useState(false);
+const closedMixin = (theme) => ({
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: 'hidden',
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up('sm')]: {
+    width: `calc(${theme.spacing(8)} + 1px)`,
+  },
+});
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  padding: theme.spacing(0, 1),
+  ...theme.mixins.toolbar,
+}));
+
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+    boxSizing: 'border-box',
+    ...(open && {
+      ...openedMixin(theme),
+      '& .MuiDrawer-paper': openedMixin(theme),
+    }),
+    ...(!open && {
+      ...closedMixin(theme),
+      '& .MuiDrawer-paper': closedMixin(theme),
+    }),
+  }),
+);
+
+export default function MiniDrawer() {
+  const [fraterOpen, setFraterOpen] = React.useState(false);
+  const [butlerOpen, setButlerOpen] = React.useState(false);
+  const toggleFrater = () => {
+      setFraterOpen(!fraterOpen);
+    };
+  
+    const toggleButler = () => {
+      setButlerOpen(!butlerOpen);
+    };
+
+  const [open, setOpen] = React.useState(true);
 
   const toggleDrawer = () => {
+    if (open) {
+      setFraterOpen(false);
+      setButlerOpen(false);
+    }
     setOpen(!open);
-  };
-
-  const toggleFrater = () => {
-    setFraterOpen(!fraterOpen);
-  };
-
-
-  const theme = createTheme({
-    palette: {
-      mode: 'dark',
-    },
-  });
+  }
 
   return (
-    <ThemeProvider theme={theme}>
-      <div style={{ display: 'flex' }}>
-        <Drawer
-          variant="permanent"
-          open={open}
-          sx={{
-            width: 240,
-            flexShrink: 0,
-            '& .MuiDrawer-paper': {
-              width: 240,
-              boxSizing: 'border-box',
-            },
-          }}
-        >
-          <List>
-          <ListItem
-              button
-              component={Link}
-              to={"/"}
-              selected={false}
-            >
-              <ListItemText>
-                <Typography variant="h6">Home</Typography>
-              </ListItemText>
-            </ListItem>
-            <ListItem
-              button
-              key="Frater"
-              selected={false}
-            >
-              <ListItemText>
-                <Typography variant="h6" component={Link}
-              to={"/frater"}>Frater</Typography>
-              </ListItemText>
-              <IconButton onClick={toggleFrater}>
-                {fraterOpen ? <ExpandLessIcon /> : <KeyboardArrowDownIcon />}
-              </IconButton>
-            </ListItem>
-            <Collapse in={fraterOpen} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
-                {FraterLinks.map((link) => (
-                  <a
-                    key={link.text}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <ListItem button>
-                      <ListItemText>
-                        {link.text}
-                      </ListItemText>
-                    </ListItem>
-                  </a>
-                ))}
-              </List>
-            </Collapse>
-            
-            {OtherLinks.map((item) => (
-              <ListItem
-                button
-                key={item.text}
-                component={Link}
-                to={item.path}
-                selected={false}
-              >
-                <ListItemText>
-                  <Typography variant="h6">{item.text}</Typography>
-                </ListItemText>
-              </ListItem>
-            ))}
-          </List>
-        </Drawer>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          onClick={toggleDrawer}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            position: 'fixed',
-            top: '8px',
-            left: '8px',
-          }}
-        >
-          <MenuIcon />
-        </IconButton>
-      </div>
-    </ThemeProvider>
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <Drawer variant="permanent" open={open}>
+        <DrawerHeader width={10}>
+          <IconButton onClick={toggleDrawer}>
+            {!open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
+        <SidebarLinks 
+          fraterOpen={fraterOpen}
+          butlerOpen={butlerOpen}
+          toggleFrater={toggleFrater}
+          toggleButler={toggleButler}
+        />
+      </Drawer>
+    </Box>
   );
-};
+}
 
-export default Sidebar;
