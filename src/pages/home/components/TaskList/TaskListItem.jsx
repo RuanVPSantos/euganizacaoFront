@@ -23,6 +23,7 @@ const TaskListItem = ({ task, onUpdateTask, onDeleteTask }) => {
   const [editMode, setEditMode] = useState(false);
 
   const handleStatusChange = (event) => {
+    setEditMode(false);
     onUpdateTask(task.id, { status: event.target.value });
   };
   return (
