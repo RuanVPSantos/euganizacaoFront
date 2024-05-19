@@ -131,7 +131,7 @@ export default function BasicTabs() {
               />
             </Grid>
             <Grid item xs={4}>
-              <ChartTabs data={ccs} />
+              <ChartTabs data={ccs}/>
             </Grid>
           </Grid>
         </CustomTabPanel>
