@@ -16,15 +16,8 @@ const AddTaskField = ({ newTaskContent, setNewTaskContent, onCreateTask }) => {
       <Grid item xs={12}>
         <Button
           variant="contained"
-          color="primary"
           onClick={onCreateTask}
-          sx={{
-            bgcolor: '#333',
-            color: '#f2ecff',
-            '&:hover': {
-              bgcolor: '#444',
-            },
-          }}
+          color="secondary"
         >
           Adicionar Tarefa
         </Button>

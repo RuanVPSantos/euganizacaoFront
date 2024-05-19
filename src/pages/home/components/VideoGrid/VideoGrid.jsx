@@ -4,7 +4,7 @@ import { VideoGridPropTypes } from './VideoGrid.propTypes';
 
 const VideoGrid = ({ channelName, videos, onMarkAsWatched, onMarkAsUnwatched }) => (
   <Grid item xs={12}>
-    <Typography variant="h4" style={{ color: '#f2ecff' }}>
+    <Typography variant="h4">
       {channelName}
     </Typography>
     <Grid container spacing={2}>

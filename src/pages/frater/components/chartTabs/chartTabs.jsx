@@ -14,7 +14,18 @@ const ChartTabs = ({ data }) => {
 
   return (
     <div>
-      <Tabs value={value} onChange={handleChange} centered>
+    <Tabs
+          value={value} onChange={handleChange} centered sx={{
+    '& .MuiTabs-indicator': {
+      backgroundColor: 'white',
+    },
+    '& .Mui-selected': {
+      color: 'white',
+    },
+    '& .MuiTab-textColorInherit': {
+      opacity: 1,
+    },
+  }}>
         <Tab label="Semanal" />
         <Tab label="Quinzenal" />
         <Tab label="Mensal" />

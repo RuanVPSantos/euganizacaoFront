@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { createTheme, ThemeProvider } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
@@ -48,12 +47,6 @@ export default function BasicTabs() {
   const [ccs, setCcs] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const darkTheme = createTheme({
-    palette: {
-      mode: 'dark',
-    },
-  });
-
   const fetchCcs = async () => {
     try {
       const data = await getAllCc();
@@ -93,19 +86,17 @@ export default function BasicTabs() {
   };
 
   return (
-    <ThemeProvider theme={darkTheme}>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
             value={value}
             onChange={handleChange}
-            aria-label="basic tabs example"
             sx={{
               '& .MuiTabs-indicator': {
-                backgroundColor: 'white',
+                backgroundColor: 'white', // Defina a cor desejada para o indicador
               },
               '& .Mui-selected': {
-                color: 'white',
+                color: 'white', // Cor do texto selecionado
               },
               '& .MuiTab-textColorInherit': {
                 opacity: 1,
@@ -145,6 +136,5 @@ export default function BasicTabs() {
           Demais
         </CustomTabPanel>
       </Box>
-    </ThemeProvider>
   );
 }

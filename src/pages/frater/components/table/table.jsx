@@ -1,48 +1,81 @@
 import PropTypes from 'prop-types';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress } from '@mui/material';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  CircularProgress,
+  createTheme,
+  ThemeProvider,
+} from '@mui/material';
 import EditableField from './EditableField';
 
-const TableCCs = ({ handleLastUpdatedChange, handleObservationEdit, ccs, loading }) => {
+const theme = createTheme({
+  palette: {
+    mode: 'dark',
+    background: {
+      default: '#121212',
+      paper: '#1c1c1c',
+    },
+    text: {
+      primary: '#e0e0e0',
+      secondary: '#b0b0b0',
+    },
+  },
+});
 
+const TableCCs = ({ handleLastUpdatedChange, handleObservationEdit, ccs, loading }) => {
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="CCs Table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="center">Name</TableCell>
-            <TableCell align="center">Prioridade</TableCell>
-            <TableCell align="center">Observation</TableCell>
-            <TableCell align="center">Last Updated</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {loading ? (
+    <ThemeProvider theme={theme}>
+      <TableContainer component={Paper}>
+        <Table aria-label="CCs Table">
+          <TableHead>
             <TableRow>
-              <TableCell colSpan={4} align="center">
-                <CircularProgress />
-              </TableCell>
+              <TableCell align="center" style={{ color: theme.palette.text.primary }}>Name</TableCell>
+              <TableCell align="center" style={{ color: theme.palette.text.primary }}>Prioridade</TableCell>
+              <TableCell align="center" style={{ color: theme.palette.text.primary }}>Observation</TableCell>
+              <TableCell align="center" style={{ color: theme.palette.text.primary }}>Last Updated</TableCell>
             </TableRow>
-          ) : (
-            ccs.map((cc) => (
-              <TableRow key={cc.id}>
-                <TableCell align="center">{cc.name}</TableCell>
-                <TableCell align="center" style={{ maxWidth: '20px' }}>{cc.prioridade}</TableCell>
-                <TableCell align="center" style={{ maxWidth: '100px' }}>
-                  <EditableField value={cc.observation} onSave={(newValue) => handleObservationEdit(cc.id, newValue)} />
-                </TableCell>
-                <TableCell align="center">
-                  <input
-                    type='date'
-                    value={cc.last_updated}
-                    onChange={(e) => handleLastUpdatedChange(cc.id, e.target.value)}
-                  />
+          </TableHead>
+          <TableBody>
+            {loading ? (
+              <TableRow>
+                <TableCell colSpan={4} align="center">
+                  <CircularProgress />
                 </TableCell>
               </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            ) : (
+              ccs.map((cc) => (
+                <TableRow key={cc.id} style={{ backgroundColor: theme.palette.background.paper }}>
+                  <TableCell align="center" style={{ color: theme.palette.text.primary }}>{cc.name}</TableCell>
+                  <TableCell align="center" style={{ color: theme.palette.text.primary, maxWidth: '20px' }}>{cc.prioridade}</TableCell>
+                  <TableCell align="center" style={{ color: theme.palette.text.primary, maxWidth: '100px' }}>
+                    <EditableField value={cc.observation} onSave={(newValue) => handleObservationEdit(cc.id, newValue)} />
+                  </TableCell>
+                  <TableCell align="center" style={{ color: theme.palette.text.primary }}>
+                    <input
+                      type='date'
+                      value={cc.last_updated}
+                      onChange={(e) => handleLastUpdatedChange(cc.id, e.target.value)}
+                      style={{
+                        backgroundColor: theme.palette.background.default,
+                        color: theme.palette.text.primary,
+                        border: 'none',
+                        borderRadius: '4px',
+                        padding: '5px',
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ThemeProvider>
   );
 };
 

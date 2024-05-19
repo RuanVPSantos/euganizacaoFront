@@ -30,7 +30,7 @@ const TaskListItem = ({ task, onUpdateTask, onDeleteTask }) => {
     <ListItem key={task.id} dense>
       <Grid container alignItems="center">
         <Grid item xs={2}>
-          <Typography variant="body1" color="#f2ecff">
+          <Typography variant="body1">
             {statusIcons[task.status]}
           </Typography>
         </Grid>
@@ -38,7 +38,6 @@ const TaskListItem = ({ task, onUpdateTask, onDeleteTask }) => {
           <ListItemText>
             <Typography
               variant="body1" 
-              color="#f2ecff" 
               component="div" 
               sx={{ 
                 textDecoration: task.status === 2 ? 'line-through' : 'none' 
@@ -52,7 +51,6 @@ const TaskListItem = ({ task, onUpdateTask, onDeleteTask }) => {
           <IconButton 
             aria-label="edit" 
             onClick={() => setEditMode(!editMode)}
-            sx={{ bgcolor: editMode ? '#37474f' : 'transparent' }}
           >
             <EditIcon />
           </IconButton>
