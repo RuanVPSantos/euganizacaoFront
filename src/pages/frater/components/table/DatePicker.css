@@ -1,0 +1,36 @@
+.react-datepicker {
+    font-family: Arial, sans-serif;
+  }
+  
+  .react-datepicker__header {
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .react-datepicker__current-month {
+    color: #fff;
+  }
+  
+  .react-datepicker__day-name,
+  .react-datepicker__day {
+    color: #fff;
+  }
+  
+  .react-datepicker__day--selected {
+    background-color: #555;
+    color: #fff;
+  }
+  
+  .react-datepicker__day--keyboard-selected {
+    background-color: #555;
+    color: #fff;
+  }
+  
+  .react-datepicker__day--today {
+    color: #ff0;
+  }
+  
+  .react-datepicker__time-list-item {
+    color: #fff;
+  }
+  

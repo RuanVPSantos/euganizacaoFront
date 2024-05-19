@@ -1,3 +1,4 @@
+/* Reset and scrollbar styling */
 * {
   margin: 0;
   padding: 0;
@@ -22,4 +23,46 @@ a, a * {
   display: flex;
   align-content: center;
   align-items: center;
+}
+
+/* Dark theme for date input */
+:root {
+  --background-color: #121212;
+  --text-color: #ffffff;
+  --primary-color: #bb86fc;
+  --secondary-color: #03dac6;
+  --surface-color: #1e1e1e;
+  --on-surface-color: #ffffff;
+  --border-color: #555555;
+  --placeholder-color: #888888;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+input[type="date"] {
+  background-color: var(--surface-color); /* Cor de fundo do input */
+  color: var(--on-surface-color); /* Cor do texto */
+  border: 1px solid var(--border-color); /* Cor da borda */
+  padding: 8px; /* Espaçamento interno */
+  border-radius: 4px; /* Arredondamento dos cantos */
+  font-size: 13px; /* Tamanho da fonte */
+  outline: none; /* Remove a borda de foco padrão */
+  width: 100%;
+  max-width: 125px;
+}
+
+input[type="date"]:focus {
+  border-color: var(--primary-color);
+}
+
+/* Estilo para o placeholder */
+input[type="date"]::placeholder {
+  color: var(--placeholder-color);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
 }

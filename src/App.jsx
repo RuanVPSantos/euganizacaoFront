@@ -17,7 +17,6 @@ const App = () => {
   });
   return (
     <ThemeProvider theme={theme}>
-
     <Router>
     <div style={{ display: 'flex' }}>
       <Sidebar />

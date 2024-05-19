@@ -3,6 +3,52 @@ import axiosInstance from './axiosConfig';
 const YT_API_BASE = `${import.meta.env.VITE_YT_API}yt/`;
 const MAIN_NOTE_API_BASE = `${import.meta.env.VITE_MAINNOTE_API}main_note/`;
 const TASK_API_BASE = `${import.meta.env.VITE_TASK_API_BASE}tasks/`;
+const CCS_API_BASE = `${import.meta.env.VITE_API_FRATER_CCS}`;
+
+export const getAllCc = async () => {
+  try {
+    const response = await axiosInstance.get(`${CCS_API_BASE}api/cc/`);
+    return response.data;
+  } catch (error) {
+    throw new Error('Erro ao buscar todos os CCs: ' + (error.response?.statusText || error.message));
+  }
+};
+
+export const getCc = async (id) => {
+  try {
+    const response = await axiosInstance.get(`${CCS_API_BASE}api/cc/${id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error('Erro ao buscar o CC: ' + (error.response?.statusText || error.message));
+  }
+};
+
+export const createCc = async (data) => {
+  try {
+    const response = await axiosInstance.post(`${CCS_API_BASE}api/cc/`, data);
+    return response.data;
+  } catch (error) {
+    throw new Error('Erro ao criar o CC: ' + (error.response?.statusText || error.message));
+  }
+};
+
+export const updateCc = async (id, data) => {
+  try {
+    const response = await axiosInstance.put(`${CCS_API_BASE}api/cc/${id}/`, data);
+    return response.data;
+  } catch (error) {
+    throw new Error('Erro ao atualizar o CC: ' + (error.response?.statusText || error.message));
+  }
+};
+
+export const deleteCc = async (id) => {
+  try {
+    const response = await axiosInstance.delete(`${CCS_API_BASE}api/cc/${id}/`);
+    return response.data;
+  } catch (error) {
+    throw new Error('Erro ao deletar o CC: ' + (error.response?.statusText || error.message));
+  }
+};
 
 export const fetchVideos = async () => {
   try {

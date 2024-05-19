@@ -68,7 +68,7 @@ export default function MiniDrawer() {
       setButlerOpen(!butlerOpen);
     };
 
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = () => {
     if (open) {
