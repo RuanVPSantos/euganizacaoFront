@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { checkAuth } from './services/api'; // Certifique-se de que o caminho está correto
 
 const withAuth = (WrappedComponent) => {
-  return (props) => {
+  const ComponentWithAuth = (props) => {
     const [isAuthenticated, setIsAuthenticated] = useState(null);
     const navigate = useNavigate();
 
@@ -32,6 +32,18 @@ const withAuth = (WrappedComponent) => {
 
     return isAuthenticated ? <WrappedComponent {...props} /> : null;
   };
+
+  // Adding a display name
+  ComponentWithAuth.displayName = `withAuth(${getDisplayName(WrappedComponent)})`;
+
+  return ComponentWithAuth;
 };
 
+// Helper function to get the display name of the wrapped component
+function getDisplayName(WrappedComponent) {
+  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+}
+
 export default withAuth;
+
+
