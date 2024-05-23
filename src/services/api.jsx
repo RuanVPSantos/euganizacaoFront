@@ -4,6 +4,32 @@ const YT_API_BASE = `${import.meta.env.VITE_YT_API}yt/`;
 const MAIN_NOTE_API_BASE = `${import.meta.env.VITE_MAINNOTE_API}main_note/`;
 const TASK_API_BASE = `${import.meta.env.VITE_TASK_API_BASE}tasks/`;
 const CCS_API_BASE = `${import.meta.env.VITE_API_FRATER_CCS}`;
+const LOGIN_API_BASE = `${import.meta.env.VITE_LOGIN_URL}`;
+
+export const checkAuth = async () => {
+  try {
+    const response = await axiosInstance.get(`${LOGIN_API_BASE}/check_auth/`);
+    return response.data;
+  } catch (error) {
+    throw new Error('Erro ao verificar autenticação: ' + (error.response?.statusText || error.message));
+  }
+};
+export const loginApi = async (email, password) => {
+  try {
+    const response = await axiosInstance.post(`${LOGIN_API_BASE}/login/`, {
+      email,
+      password
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error('Erro ao fazer login: ' + response.statusText);
+    }
+  } catch (error) {
+    throw new Error('Erro ao fazer login: ' + error.message);
+  }
+};
 
 export const getAllCc = async () => {
   try {
