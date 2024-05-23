@@ -8,7 +8,7 @@ const LOGIN_API_BASE = `${import.meta.env.VITE_LOGIN_URL}`;
 
 export const checkAuth = async () => {
   try {
-    const response = await axiosInstance.get(`${LOGIN_API_BASE}/check_auth/`);
+    const response = await axiosInstance.get(`${LOGIN_API_BASE}check_auth/`);
     return response.data;
   } catch (error) {
     throw new Error('Erro ao verificar autenticação: ' + (error.response?.statusText || error.message));
@@ -16,7 +16,7 @@ export const checkAuth = async () => {
 };
 export const loginApi = async (email, password) => {
   try {
-    const response = await axiosInstance.post(`${LOGIN_API_BASE}/login/`, {
+    const response = await axiosInstance.post(`${LOGIN_API_BASE}login/`, {
       email,
       password
     });
