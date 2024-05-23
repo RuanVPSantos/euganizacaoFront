@@ -5,26 +5,26 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: "#668ac4",  // Azul mais escuro Tokyo Night
+      main: "#668ac4",
     },
     secondary: {
-      main: '#9d7cd8',  // Roxo mais escuro Tokyo Night
+      main: '#9d7cd8',
     },
     background: {
-      default: '#16161e',  // Fundo padrão ainda mais escuro
-      paper: '#1d1f30',    // Fundo de papel mais escuro
+      default: '#16161e',
+      paper: '#1d1f30',
     },
     text: {
-      primary: '#a9b1d6',  // Texto primário mais escuro
-      secondary: '#828bb8',  // Texto secundário mais escuro
-      disabled: '#4e5579',   // Texto desabilitado mais escuro
-      hint: '#828bb8',       // Dicas de texto mais escuras
+      primary: '#a9b1d6',  
+      secondary: '#828bb8',  
+      disabled: '#4e5579',
+      hint: '#828bb8',
     },
-    divider: '#3b4261',    // Cor do divisor mais escura
+    divider: '#3b4261',
   },
   typography: {
     allVariants: {
-      color: '#a9b1d6',  // Cor padrão para todo o texto mais escura
+      color: '#a9b1d6',
     },
   },
 });

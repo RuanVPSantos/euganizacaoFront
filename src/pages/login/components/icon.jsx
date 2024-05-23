@@ -12,7 +12,7 @@ const styles = {
     boxSizing: 'border-box',
     borderRadius: '12px',
     color: '#ffffff',
-    backgroundColor: '#000000',
+    backgroundColor: '#16161e',
     outline: 'none',
   },
   Icon: {

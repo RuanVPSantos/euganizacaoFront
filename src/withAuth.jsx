@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { checkAuth } from './services/api'; // Certifique-se de que o caminho está correto
+import { checkAuth } from './services/api';
 
 const withAuth = (WrappedComponent) => {
   const ComponentWithAuth = (props) => {

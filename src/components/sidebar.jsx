@@ -8,6 +8,10 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { Avatar, ListItem, ListItemIcon, ListItemText, Typography, List } from '@mui/material';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { logoutApi, checkAuth } from '../services/api';
+import theme from '../theme';
 
 const drawerWidth = 240;
 
@@ -60,15 +64,34 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function MiniDrawer() {
   const [fraterOpen, setFraterOpen] = React.useState(false);
   const [butlerOpen, setButlerOpen] = React.useState(false);
-  const toggleFrater = () => {
-      setFraterOpen(!fraterOpen);
-    };
-  
-    const toggleButler = () => {
-      setButlerOpen(!butlerOpen);
+  const [authenticated, setAuthenticated] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
+
+  React.useEffect(() => {
+    const checkAuthentication = async () => {
+      try {
+        const response = await checkAuth();
+        if (response.message === 'User is authenticated') {
+          setAuthenticated(true);
+        } else {
+          setAuthenticated(false);
+        }
+      } catch (error) {
+        console.error("Error checking authentication:", error);
+        setAuthenticated(false);
+      }
     };
 
-  const [open, setOpen] = React.useState(true);
+    checkAuthentication();
+  }, []);
+
+  const toggleFrater = () => {
+    setFraterOpen(!fraterOpen);
+  };
+  
+  const toggleButler = () => {
+    setButlerOpen(!butlerOpen);
+  };
 
   const toggleDrawer = () => {
     if (open) {
@@ -78,24 +101,62 @@ export default function MiniDrawer() {
     setOpen(!open);
   }
 
-  return (
+  const logoutHandler = async () => {
+    await logoutApi(); 
+    window.location.reload();
+  };
+  const drawerContent = authenticated ? (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader width={10}>
-          <IconButton onClick={toggleDrawer}>
-            {!open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <SidebarLinks 
-          fraterOpen={fraterOpen}
-          butlerOpen={butlerOpen}
-          toggleFrater={toggleFrater}
-          toggleButler={toggleButler}
-        />
+      <Drawer variant="permanent" open={open} >
+      <DrawerHeader width={10}>
+        <IconButton onClick={toggleDrawer}>
+          {!open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+        </IconButton>
+      </DrawerHeader>
+      {open ? <List>
+      <ListItem sx={{ flexDirection: 'column', alignItems: 'center' }}>
+        <ListItemIcon>
+          <Avatar sx={{ width: '4rem', height: '4rem', color: theme.palette.background.paper, backgroundColor: theme.palette.primary.main }} />
+        </ListItemIcon>
+        <ListItemText sx={{ textAlign: 'center' }}>
+          <Typography variant="subtitle1">
+            {localStorage.getItem('username')}
+          </Typography>
+        </ListItemText>
+      </ListItem>
+      </List> : <></>}
+      <Divider />
+      <SidebarLinks 
+        fraterOpen={fraterOpen}
+        butlerOpen={butlerOpen}
+        toggleFrater={toggleFrater}
+        toggleButler={toggleButler}
+      />
+      <Divider />
+      <List>
+      <ListItem button onClick={logoutHandler}>
+  <ListItemIcon
+    sx={{
+      minWidth: 0,
+      mr: 3,
+      justifyContent: 'center',
+    }}
+  >
+    <ExitToAppIcon />
+  </ListItemIcon>
+  <ListItemText>
+    <Typography>
+      Logout
+    </Typography>
+  </ListItemText>
+</ListItem>
+      </List>
       </Drawer>
     </Box>
+  ) : null;
+
+  return (
+    <>{drawerContent}</>
   );
 }
-

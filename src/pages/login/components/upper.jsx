@@ -15,7 +15,7 @@ function Upper() {
         <div style={style.div}>
             <IconButton />
             <Typography variant='body1'>
-                Meu Mundinho
+                Frigg
             </Typography>
       </div>
      );

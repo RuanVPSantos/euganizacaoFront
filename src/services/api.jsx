@@ -6,11 +6,21 @@ const TASK_API_BASE = `${import.meta.env.VITE_TASK_API_BASE}tasks/`;
 const CCS_API_BASE = `${import.meta.env.VITE_API_FRATER_CCS}`;
 const LOGIN_API_BASE = `${import.meta.env.VITE_LOGIN_URL}`;
 
+export const logoutApi = async () => {
+  try {
+    const response = await axiosInstance.get(`${LOGIN_API_BASE}logout/`);
+    localStorage.removeItem('username');
+    return response.data;
+  } catch (error) {
+    throw new Error('Erro ao verificar autenticação: ' + (error.response?.statusText || error.message));
+  }
+};
 export const checkAuth = async () => {
   try {
     const response = await axiosInstance.get(`${LOGIN_API_BASE}check_auth/`);
     return response.data;
   } catch (error) {
+    localStorage.removeItem('username');
     throw new Error('Erro ao verificar autenticação: ' + (error.response?.statusText || error.message));
   }
 };
@@ -20,8 +30,8 @@ export const loginApi = async (email, password) => {
       email,
       password
     });
-
     if (response.status === 200) {
+      localStorage.setItem("username", response.data.name);
       return response.data;
     } else {
       throw new Error('Erro ao fazer login: ' + response.statusText);

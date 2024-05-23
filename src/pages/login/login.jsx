@@ -13,6 +13,7 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const handleChangeEmail = (e) => {
         setEmail(e.target.value);
@@ -23,9 +24,14 @@ export default function Login() {
 
     const handleSubmit = async () => {
         try {
+            setLoading(true);
             const userData = await loginApi(email, password);
-            navigate("/");
+            localStorage.setItem("username", userData.name);
+            setLoading(false);
+            navigate("/", { replace: true });
+            window.location.reload(); 
         } catch (error) {
+            setLoading(false);
             setError("Erro ao fazer login: " + error.message);
         }
     }
@@ -55,7 +61,15 @@ export default function Login() {
             />
             <FooterButtons
                 buttons={[
-                    { key: 2, text: "Login", color: "primary", type: "submit", onClickHandler: handleSubmit, fullWidth: false }
+                    { 
+                        key: 2, 
+                        text: "Login", 
+                        color: "primary", 
+                        type: "submit", 
+                        onClickHandler: handleSubmit, 
+                        fullWidth: false, 
+                        loading: loading 
+                    }
                 ]}
             />
         </LoginCard>
