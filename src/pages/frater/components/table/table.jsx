@@ -8,28 +8,12 @@ import {
   TableRow,
   Paper,
   CircularProgress,
-  createTheme,
-  ThemeProvider,
 } from '@mui/material';
 import EditableField from './EditableField';
-
-const theme = createTheme({
-  palette: {
-    mode: 'dark',
-    background: {
-      default: '#121212',
-      paper: '#1c1c1c',
-    },
-    text: {
-      primary: '#e0e0e0',
-      secondary: '#b0b0b0',
-    },
-  },
-});
+import theme from '../../../../theme';
 
 const TableCCs = ({ handleLastUpdatedChange, handleObservationEdit, ccs, loading }) => {
   return (
-    <ThemeProvider theme={theme}>
       <TableContainer component={Paper}>
         <Table aria-label="CCs Table">
           <TableHead>
@@ -75,7 +59,6 @@ const TableCCs = ({ handleLastUpdatedChange, handleObservationEdit, ccs, loading
           </TableBody>
         </Table>
       </TableContainer>
-    </ThemeProvider>
   );
 };
 
