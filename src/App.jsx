@@ -8,12 +8,14 @@ import ToDoList from './pages/reference';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 import Login from './pages/login/login';
-import withAuth from './withAuth'; // Certifique-se de que o caminho está correto
+import Butler from './pages/butler/butler';
+import withAuth from './withAuth';
 
 const ProtectedHome = withAuth(Home);
 const ProtectedFrater = withAuth(Frater);
 const ProtectedProjetos = withAuth(Projetos);
 const ProtectedToDoList = withAuth(ToDoList);
+const ProtectedButler = withAuth(Butler)
 
 const App = () => {
   return (
@@ -25,7 +27,7 @@ const App = () => {
             <Route path="/" element={<ProtectedHome />} />
             <Route path="/login" element={<Login />} />
             <Route path="/frater" element={<ProtectedFrater />} />
-            <Route path="/butler" element={withAuth(() => <p>Butler content goes here</p>)} />
+            <Route path="/butler" element={<ProtectedButler />} />
             <Route path='/reference' element={<ProtectedToDoList />} />
             <Route path="/faculdade" element={withAuth(() => <p>Faculdade content goes here</p>)} />
             <Route path="/familia" element={withAuth(() => <p>Família content goes here</p>)} />
