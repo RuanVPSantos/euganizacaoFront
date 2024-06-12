@@ -19,34 +19,47 @@ export const logoutApi = async () => {
 
 export const checkAuth = async () => {
   try {
+    // Verifica se o token está presente no localStorage
     const token = localStorage.getItem('access_token');
-    console.log("Token recuperado no checkAuth:", token);
+    if (!token) {
+      throw new Error('Token de acesso não encontrado no armazenamento local');
+    }
+
+    // Realiza a requisição para verificar a autenticação
     const response = await axiosInstance.get(`${LOGIN_API_BASE}check_auth/`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
-    localStorage.setItem("username", response.data.name);
+
+    // Atualiza o nome do usuário no localStorage, se estiver presente na resposta
+    if (response.data && response.data.name) {
+      localStorage.setItem("username", response.data.name);
+    }
+
     return response.data;
   } catch (error) {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('username');
+    // Remove o token e o nome de usuário do localStorage em caso de erro
+    // localStorage.removeItem('access_token');
+    // localStorage.removeItem('username');
     throw new Error('Erro ao verificar autenticação: ' + (error.response?.statusText || error.message));
   }
 };
 
+
 export const loginApi = async (email, password) => {
   try {
-    const formData = new URLSearchParams();
-    formData.append('username', email);
-    formData.append('password', password);
+    const formData = {
+      username : email,
+      password : password
+    }
 
     const response = await axiosInstance.post(`${LOGIN_API_BASE}login/`, formData);
     if (response.status === 200) {
-      console.log("Login bem-sucedido:", response.data); // Adicionado para debug
+      console.log("Login bem-sucedido:", response.data);
       localStorage.setItem("access_token", response.data.access_token);
       localStorage.setItem("username", response.data.name);
-      console.log("Token salvo:", localStorage.getItem("access_token")); // Verificar se o token foi salvo
+      console.log("Token salvo:", localStorage.getItem("access_token"));
       return response.data;
     } else {
       throw new Error('Erro ao fazer login: ' + response.statusText);
