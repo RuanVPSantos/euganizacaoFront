@@ -25,6 +25,9 @@ const menuItems = [
       { name: '402 Norte', link: 'https://plataforma.vobi.com.br/profissional/projetos/perfil/147823/financeiro/cobrancas' },
       { name: 'Darson', link: 'https://plataforma.vobi.com.br/profissional/projetos/perfil/132283/financeiro/cobrancas' },
       { name: 'Maia', link: '' },
+      { name: 'Ed Carlton', link : ''},
+      { name: 'The Coffee', link : 'https://plataforma.vobi.com.br/profissional/projetos/perfil/211241/financeiro/cobrancas'},
+      { name: 'Família Barros', link: 'https://plataforma.vobi.com.br/profissional/projetos/perfil/188332/financeiro/cobrancas'},
       { name: 'Thibaus', link: 'https://plataforma.vobi.com.br/profissional/projetos/perfil/132290/financeiro/cobrancas' },
       { name: 'Pingret', link: 'https://plataforma.vobi.com.br/profissional/projetos/perfil/162162/financeiro/cobrancas' }
     ]

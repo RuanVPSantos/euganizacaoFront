@@ -8,30 +8,45 @@ const LOGIN_API_BASE = `${import.meta.env.VITE_LOGIN_URL}`;
 
 export const logoutApi = async () => {
   try {
-    const response = await axiosInstance.get(`${LOGIN_API_BASE}logout/`);
+    const response = await axiosInstance.post(`${LOGIN_API_BASE}logout/`);
+    localStorage.removeItem('access_token');
     localStorage.removeItem('username');
     return response.data;
   } catch (error) {
-    throw new Error('Erro ao verificar autenticação: ' + (error.response?.statusText || error.message));
+    throw new Error('Erro ao realizar logout: ' + (error.response?.statusText || error.message));
   }
 };
+
 export const checkAuth = async () => {
   try {
-    const response = await axiosInstance.get(`${LOGIN_API_BASE}check_auth/`);
+    const token = localStorage.getItem('access_token');
+    console.log("Token recuperado no checkAuth:", token);
+    const response = await axiosInstance.get(`${LOGIN_API_BASE}check_auth/`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    localStorage.setItem("username", response.data.name);
     return response.data;
   } catch (error) {
+    localStorage.removeItem('access_token');
     localStorage.removeItem('username');
     throw new Error('Erro ao verificar autenticação: ' + (error.response?.statusText || error.message));
   }
 };
+
 export const loginApi = async (email, password) => {
   try {
-    const response = await axiosInstance.post(`${LOGIN_API_BASE}login/`, {
-      email,
-      password
-    });
+    const formData = new URLSearchParams();
+    formData.append('username', email);
+    formData.append('password', password);
+
+    const response = await axiosInstance.post(`${LOGIN_API_BASE}login/`, formData);
     if (response.status === 200) {
+      console.log("Login bem-sucedido:", response.data); // Adicionado para debug
+      localStorage.setItem("access_token", response.data.access_token);
       localStorage.setItem("username", response.data.name);
+      console.log("Token salvo:", localStorage.getItem("access_token")); // Verificar se o token foi salvo
       return response.data;
     } else {
       throw new Error('Erro ao fazer login: ' + response.statusText);
@@ -43,7 +58,11 @@ export const loginApi = async (email, password) => {
 
 export const getAllCc = async () => {
   try {
-    const response = await axiosInstance.get(`${CCS_API_BASE}api/cc/`);
+    const response = await axiosInstance.get(`${CCS_API_BASE}api/cc/`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`
+      }
+    });
     return response.data;
   } catch (error) {
     throw new Error('Erro ao buscar todos os CCs: ' + (error.response?.statusText || error.message));
@@ -52,7 +71,11 @@ export const getAllCc = async () => {
 
 export const getCc = async (id) => {
   try {
-    const response = await axiosInstance.get(`${CCS_API_BASE}api/cc/${id}`);
+    const response = await axiosInstance.get(`${CCS_API_BASE}api/cc/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`
+      }
+    });
     return response.data;
   } catch (error) {
     throw new Error('Erro ao buscar o CC: ' + (error.response?.statusText || error.message));
@@ -61,7 +84,11 @@ export const getCc = async (id) => {
 
 export const createCc = async (data) => {
   try {
-    const response = await axiosInstance.post(`${CCS_API_BASE}api/cc/`, data);
+    const response = await axiosInstance.post(`${CCS_API_BASE}api/cc/`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`
+      }
+    });
     return response.data;
   } catch (error) {
     throw new Error('Erro ao criar o CC: ' + (error.response?.statusText || error.message));
@@ -70,7 +97,11 @@ export const createCc = async (data) => {
 
 export const updateCc = async (id, data) => {
   try {
-    const response = await axiosInstance.put(`${CCS_API_BASE}api/cc/${id}/`, data);
+    const response = await axiosInstance.put(`${CCS_API_BASE}api/cc/${id}/`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`
+      }
+    });
     return response.data;
   } catch (error) {
     throw new Error('Erro ao atualizar o CC: ' + (error.response?.statusText || error.message));
@@ -79,7 +110,11 @@ export const updateCc = async (id, data) => {
 
 export const deleteCc = async (id) => {
   try {
-    const response = await axiosInstance.delete(`${CCS_API_BASE}api/cc/${id}/`);
+    const response = await axiosInstance.delete(`${CCS_API_BASE}api/cc/${id}/`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`
+      }
+    });
     return response.data;
   } catch (error) {
     throw new Error('Erro ao deletar o CC: ' + (error.response?.statusText || error.message));
@@ -87,8 +122,13 @@ export const deleteCc = async (id) => {
 };
 
 export const fetchVideos = async () => {
+  const token = localStorage.getItem("access_token");
   try {
-    const response = await axiosInstance.get(YT_API_BASE);
+    const response = await axiosInstance.get(YT_API_BASE, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return response.data;
   } catch (error) {
     throw new Error('Erro ao buscar vídeos: ' + error.response?.statusText || error.message);
@@ -96,8 +136,13 @@ export const fetchVideos = async () => {
 };
 
 export const fetchMainNote = async () => {
+  const token = localStorage.getItem("access_token");
   try {
-    const response = await axiosInstance.get(MAIN_NOTE_API_BASE);
+    const response = await axiosInstance.get(MAIN_NOTE_API_BASE, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return response.data;
   } catch (error) {
     throw new Error('Erro ao buscar main note: ' + error.response?.statusText || error.message);
@@ -105,25 +150,37 @@ export const fetchMainNote = async () => {
 };
 
 export const markVideoAsWatched = async (videoId) => {
+  const token = localStorage.getItem("access_token");
   try {
-    await axiosInstance.post(`${YT_API_BASE}videos/${videoId}/mark-as-watched`);
+    await axiosInstance.post(`${YT_API_BASE}videos/${videoId}/mark-as-watched`, null, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   } catch (error) {
     throw new Error('Erro ao marcar vídeo como assistido: ' + error.response?.statusText || error.message);
   }
 };
 
 export const markVideoAsUnwatched = async (videoId) => {
+  const token = localStorage.getItem("access_token");
   try {
-    await axiosInstance.post(`${YT_API_BASE}videos/${videoId}/mark-as-unwatched`);
+    await axiosInstance.post(`${YT_API_BASE}videos/${videoId}/mark-as-unwatched`, null, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   } catch (error) {
     throw new Error('Erro ao marcar vídeo como não assistido: ' + error.response?.statusText || error.message);
   }
 };
 
 export const updateMainNote = async (content) => {
+  const token = localStorage.getItem("access_token");
   try {
     const response = await axiosInstance.put(MAIN_NOTE_API_BASE, { content }, {
       headers: {
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json'
       }
     });
@@ -134,39 +191,58 @@ export const updateMainNote = async (content) => {
 };
 
 export const createTask = async (content) => {
+  const token = localStorage.getItem("access_token");
   try {
-    const response = await axiosInstance.post(TASK_API_BASE, { content, status: 1 });
+    const response = await axiosInstance.post(TASK_API_BASE, { content, status: 1 }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return response.data;
   } catch (error) {
     throw new Error('Erro ao criar tarefa: ' + (error.response?.statusText || error.message));
   }
 };
 
-
 export const getUserTasks = async () => {
+  const token = localStorage.getItem("access_token");
   try {
-    const response = await axiosInstance.get(`${TASK_API_BASE}`);
+    const response = await axiosInstance.get(`${TASK_API_BASE}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return response.data;
   } catch (error) {
-    throw new Error('Erro ao buscar tarefas do usuário: ' + error.response?.statusText || error.message);
+    throw new Error('Erro ao buscar tarefas do usuário: ' + (error.response?.statusText || error.message));
   }
 };
 
-// Update a task
+// Atualizar uma tarefa
 export const updateTask = async (taskId, updates) => {
+  const token = localStorage.getItem("access_token");
   try {
-    const response = await axiosInstance.put(`${TASK_API_BASE}${taskId}`, updates);
+    const response = await axiosInstance.put(`${TASK_API_BASE}${taskId}`, updates, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return response.data;
   } catch (error) {
-    throw new Error('Erro ao atualizar tarefa: ' + error.response?.statusText || error.message);
+    throw new Error('Erro ao atualizar tarefa: ' + (error.response?.statusText || error.message));
   }
 };
 
 export const deleteTask = async (taskId) => {
+  const token = localStorage.getItem("access_token");
   try {
-    const response = await axiosInstance.delete(`${TASK_API_BASE}${taskId}`);
+    const response = await axiosInstance.delete(`${TASK_API_BASE}${taskId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return response.data;
   } catch (error) {
-    throw new Error('Erro ao deletar tarefa: ' + error.response?.statusText || error.message);
+    throw new Error('Erro ao deletar tarefa: ' + (error.response?.statusText || error.message));
   }
 };
