@@ -68,27 +68,26 @@ export default function MiniDrawer() {
   const [open, setOpen] = React.useState(true);
 
   React.useEffect(() => {
-    const checkAuthentication = async () => {
+    const verifyAuth = async () => {
       try {
         const response = await checkAuth();
-        if (response) {
+        if (response.name) {
           setAuthenticated(true);
         } else {
           setAuthenticated(false);
         }
       } catch (error) {
-        console.error("Error checking authentication:", error);
         setAuthenticated(false);
       }
     };
 
-    checkAuthentication();
+    verifyAuth();
   }, []);
 
   const toggleFrater = () => {
     setFraterOpen(!fraterOpen);
   };
-  
+
   const toggleButler = () => {
     setButlerOpen(!butlerOpen);
   };
@@ -99,64 +98,70 @@ export default function MiniDrawer() {
       setButlerOpen(false);
     }
     setOpen(!open);
-  }
+  };
 
   const logoutHandler = async () => {
-    await logoutApi(); 
+    await logoutApi();
     window.location.reload();
   };
-  const drawerContent = (
+
+  const drawerContent = authenticated ? (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <Drawer variant="permanent" open={open} >
-      <DrawerHeader width={10}>
-        <IconButton onClick={toggleDrawer}>
-          {!open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-        </IconButton>
-      </DrawerHeader>
-      {open ? <List>
-      <ListItem sx={{ flexDirection: 'column', alignItems: 'center' }}>
-        <ListItemIcon>
-          <Avatar sx={{ width: '4rem', height: '4rem', color: theme.palette.background.paper, backgroundColor: theme.palette.primary.main }} />
-        </ListItemIcon>
-        <ListItemText sx={{ textAlign: 'center' }}>
-          <Typography variant="subtitle1">
-            {localStorage.getItem('username')}
-          </Typography>
-        </ListItemText>
-      </ListItem>
-      </List> : <></>}
-      <Divider />
-      <SidebarLinks 
-        fraterOpen={fraterOpen}
-        butlerOpen={butlerOpen}
-        toggleFrater={toggleFrater}
-        toggleButler={toggleButler}
-      />
-      <Divider />
-      <List>
-      <ListItem button onClick={logoutHandler}>
-  <ListItemIcon
-    sx={{
-      minWidth: 0,
-      mr: 3,
-      justifyContent: 'center',
-    }}
-  >
-    <ExitToAppIcon />
-  </ListItemIcon>
-  <ListItemText>
-    <Typography>
-      Logout
-    </Typography>
-  </ListItemText>
-</ListItem>
-      </List>
+      <Drawer variant="permanent" open={open}>
+        <DrawerHeader>
+          <IconButton onClick={toggleDrawer}>
+            {!open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </DrawerHeader>
+        {open ? (
+          <List>
+            <ListItem sx={{ flexDirection: 'column', alignItems: 'center' }}>
+              <ListItemIcon>
+                <Avatar
+                  sx={{
+                    width: '4rem',
+                    height: '4rem',
+                    color: theme.palette.background.paper,
+                    backgroundColor: theme.palette.primary.main,
+                  }}
+                />
+              </ListItemIcon>
+              <ListItemText sx={{ textAlign: 'center' }}>
+                <Typography variant="subtitle1">
+                  {localStorage.getItem('username')}
+                </Typography>
+              </ListItemText>
+            </ListItem>
+          </List>
+        ) : null}
+        <Divider />
+        <SidebarLinks
+          fraterOpen={fraterOpen}
+          butlerOpen={butlerOpen}
+          toggleFrater={toggleFrater}
+          toggleButler={toggleButler}
+        />
+        <Divider />
+        <List>
+          <ListItem button onClick={logoutHandler}>
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: 3,
+                justifyContent: 'center',
+              }}
+            >
+              <ExitToAppIcon />
+            </ListItemIcon>
+            <ListItemText>
+              <Typography>Logout</Typography>
+            </ListItemText>
+          </ListItem>
+        </List>
       </Drawer>
     </Box>
-  );
+  ) : null;
 
-  return (
-    <>{drawerContent}</>
-  );
+  return <>{drawerContent}</>;
 }
