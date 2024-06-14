@@ -11,7 +11,7 @@ const withAuth = (WrappedComponent) => {
       const verifyAuth = async () => {
         try {
           const response = await checkAuth();
-          if (response.message === 'User is authenticated') {
+          if (response.name) {
             setIsAuthenticated(true);
           } else {
             setIsAuthenticated(false);
