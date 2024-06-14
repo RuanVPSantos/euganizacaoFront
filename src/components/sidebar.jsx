@@ -71,6 +71,7 @@ export default function MiniDrawer() {
     const checkAuthentication = async () => {
       try {
         const response = await checkAuth();
+        console.log(response)
         if (response.data) {
           setAuthenticated(true);
         } else {
