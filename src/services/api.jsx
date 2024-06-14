@@ -8,8 +8,11 @@ const LOGIN_API_BASE = `${import.meta.env.VITE_LOGIN_URL}`;
 
 export const logoutApi = async () => {
   try {
+    const eraseCookie= (name) => {
+      document.cookie = name + '=; expires=0'
+    }
     const response = await axiosInstance.post(`${LOGIN_API_BASE}logout/`);
-    localStorage.removeItem('access_token');
+    eraseCookie("access_token")
     localStorage.removeItem('username');
     return response.data;
   } catch (error) {
@@ -27,7 +30,6 @@ export const checkAuth = async () => {
     }
 
     const token = getCookie("access_token");
-    console.log(localStorage.getItem("access_token"));
     if (!token) {
       throw new Error('Token de acesso não encontrado no armazenamento local');
     }
