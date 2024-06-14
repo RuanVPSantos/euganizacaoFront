@@ -71,7 +71,6 @@ export default function MiniDrawer() {
     const checkAuthentication = async () => {
       try {
         const response = await checkAuth();
-        console.log(response)
         if (response) {
           setAuthenticated(true);
         } else {
@@ -106,7 +105,7 @@ export default function MiniDrawer() {
     await logoutApi(); 
     window.location.reload();
   };
-  const drawerContent = authenticated ? (
+  const drawerContent = (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <Drawer variant="permanent" open={open} >
@@ -155,7 +154,7 @@ export default function MiniDrawer() {
       </List>
       </Drawer>
     </Box>
-  ) : null;
+  );
 
   return (
     <>{drawerContent}</>
