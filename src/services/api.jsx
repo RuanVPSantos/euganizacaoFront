@@ -22,7 +22,7 @@ export const logoutApi = async () => {
 
 export const checkAuth = async () => {
   try {
-    // Verifica se o token está presente no localStorage
+    
     const getCookie = (name) => {
       const value = `; ${document.cookie}`;
       const parts = value.split(`; ${name}=`);
@@ -49,28 +49,28 @@ export const checkAuth = async () => {
   }
 };
 
-
 export const loginApi = async (email, password) => {
-  try {
+  // try {
     const formData = {
-      username : email,
-      password : password
-    }
-
+      username: email,
+      password: password
+    };
     const response = await axiosInstance.post(`${LOGIN_API_BASE}login/`, formData);
+    console.log(response)
     if (response.status === 200) {
       console.log("Login bem-sucedido:", response.data);
       let exp = new Date(new Date().setDate(new Date().getDate() + 1));
-      document.cookie = `access_token = ${response.data.access_token}; expires=${exp}`;
+      document.cookie = `access_token=${response.data.access_token}; expires=${exp.toUTCString()}`;
       localStorage.setItem("username", response.data.name);
+      localStorage.setItem("access_token", response.data.access_token); // Corrigido para salvar o token no localStorage
       console.log("Token salvo:", localStorage.getItem("access_token"));
       return response.data;
     } else {
       throw new Error('Erro ao fazer login: ' + response.statusText);
     }
-  } catch (error) {
-    throw new Error('Erro ao fazer login: ' + error.message);
-  }
+  // } catch (error) {
+  //   throw new Error('Erro ao fazer login: ' + error.message);
+  // }
 };
 
 export const getAllCc = async () => {

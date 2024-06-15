@@ -33,13 +33,11 @@ const withAuth = (WrappedComponent) => {
     return isAuthenticated ? <WrappedComponent {...props} /> : null;
   };
 
-  // Adding a display name
   ComponentWithAuth.displayName = `withAuth(${getDisplayName(WrappedComponent)})`;
 
   return ComponentWithAuth;
 };
 
-// Helper function to get the display name of the wrapped component
 function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 }
